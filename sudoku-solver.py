@@ -1,15 +1,15 @@
 import re
 check_array = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 puzzle_array = [
-        [5, 0, 3, 0, 7, 0, 0, 0, 0],
-        [6, 0, 0, 1, 9, 5, 0, 0, 0],
-        [0, 9, 8, 0, 0, 0, 6, 0, 0],
-        [8, 0, 0, 0, 6, 0, 0, 0, 3],
-        [4, 0, 0, 8, 0, 3, 0, 0, 1],
-        [7, 0, 0, 0, 2, 0, 0, 0, 6],
-        [0, 3, 0, 0, 0, 0, 2, 5, 0],
-        [0, 0, 1, 0, 0, 9, 0, 0, 8],
-        [0, 0, 6, 0, 4, 0, 0, 7, 9]
+        [0, 0, 4, 0, 5, 0, 0, 0, 0],
+        [9, 0, 0, 7, 3, 4, 6, 0, 0],
+        [0, 0, 3, 0, 2, 1, 0, 4, 9],
+        [0, 3, 5, 0, 9, 0, 4, 8, 0],
+        [0, 9, 0, 0, 0, 0, 0, 3, 0],
+        [0, 7, 6, 0, 1, 0, 9, 2, 0],
+        [3, 1, 0, 9, 7, 0, 2, 0, 0],
+        [0, 0, 9, 1, 8, 2, 0, 0, 3],
+        [0, 0, 0, 0, 6, 0, 1, 0, 0]
         ]
 game_square_dict = {}
 
@@ -26,32 +26,45 @@ class Game_square:
         return f"{self.value}"
     
     def print_big_squares(self):
-        for x in game_square_dict.items():
-            print(x.self.big_square)
+        for x, y in enumerate(game_square_dict):
+            print(game_square_dict[y].big_square)
     
     def test_possibilities(self):
+        self.check_array = [1, 2, 3, 4, 5, 6, 7, 8, 9]
         if self.value == 0:
             pattern = f'\({self.x}, \d\)'
             for key, value in game_square_dict.items():
                 if re.match(pattern, str(key)):
-                    # print(key, value)
-                    
                     for i, x in enumerate(self.check_array):
-                        
                         if str(self.check_array[i]) == str(value):
                             self.check_array.remove(self.check_array[i])
-                            print(self.check_array)
+                            # print(self.check_array)
 
             pattern = f'\(\d, {self.y}\)'
             for key, value in game_square_dict.items():
                 if re.match(pattern, str(key)):
-                    # print(key, value)
-                    
                     for i, x in enumerate(self.check_array):
                         if str(self.check_array[i]) == str(value):
                             self.check_array.remove(self.check_array[i])
-                            print(self.check_array)
-        # self.print_big_squares()                    
+                            # print(self.check_array)
+
+            for key, value in game_square_dict.items():
+                if game_square_dict[key] == self:
+                    continue
+                if game_square_dict[key].big_square == self.big_square:
+                    # print(game_square_dict[key].big_square)
+                    for i, x in enumerate(self.check_array):
+                        if str(self.check_array[i]) == str(game_square_dict[key].value):
+                            self.check_array.remove(self.check_array[i])
+                            # print(self.check_array)
+                            if len(self.check_array) == 1:
+                                puzzle_array[self.x][self.y] = self.check_array[0]
+                                print(self.check_array[0])
+                                for i, j in enumerate(puzzle_array):
+                                   
+                                    print(puzzle_array[i])
+                                print()
+        # self.print_big_squares()                
     
 
 def print_all():
@@ -59,13 +72,9 @@ def print_all():
         print(f'square: {key}, fff {value}')    
 
 def check_possibilites():
-    #   this = game_square_dict[0, 1]
-    #   print(this)
-    #   this.test_possibilities()
       for key, value in enumerate(game_square_dict):
-        
         game_square_dict[value].test_possibilities()
-        # print(f'square: {keys}, fff {value}') 
+       
 
 
       
