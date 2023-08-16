@@ -1,5 +1,6 @@
 import re
 check_array = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+#easy puzzle
 puzzle_array = [
         [0, 0, 4, 0, 5, 0, 0, 0, 0],
         [9, 0, 0, 7, 3, 4, 6, 0, 0],
@@ -34,19 +35,38 @@ class Game_square:
         if self.value == 0:
             pattern = f'\({self.x}, \d\)'
             for key, value in game_square_dict.items():
+                if game_square_dict[key] == self:
+                    continue
                 if re.match(pattern, str(key)):
                     for i, x in enumerate(self.check_array):
                         if str(self.check_array[i]) == str(value):
                             self.check_array.remove(self.check_array[i])
-                            # print(self.check_array)
+                            # print(f" first loop: {self.check_array}")
+                        if len(self.check_array) == 1:
+                            puzzle_array[self.x][self.y] = self.check_array[0]
+                            self.value = self.check_array[0]
+                            for i, j in enumerate(puzzle_array):
+            
+                                print(puzzle_array[i])
+                            print()
 
             pattern = f'\(\d, {self.y}\)'
             for key, value in game_square_dict.items():
+                if game_square_dict[key] == self:
+                    continue
                 if re.match(pattern, str(key)):
                     for i, x in enumerate(self.check_array):
                         if str(self.check_array[i]) == str(value):
                             self.check_array.remove(self.check_array[i])
-                            # print(self.check_array)
+                            # print(f" second loop: {self.check_array}")
+                        if len(self.check_array) == 1:
+                            # print(f"{self.x}, {self.y}")
+                            puzzle_array[self.x][self.y] = self.check_array[0]
+                            self.value = self.check_array[0]
+                            for i, j in enumerate(puzzle_array):
+            
+                                print(puzzle_array[i])
+                            print()
 
             for key, value in game_square_dict.items():
                 if game_square_dict[key] == self:
@@ -59,9 +79,10 @@ class Game_square:
                             # print(self.check_array)
                             if len(self.check_array) == 1:
                                 puzzle_array[self.x][self.y] = self.check_array[0]
+                                self.value = self.check_array[0]
                                 print(self.check_array[0])
                                 for i, j in enumerate(puzzle_array):
-                                   
+                                #    pass
                                     print(puzzle_array[i])
                                 print()
         # self.print_big_squares()                
@@ -71,9 +92,30 @@ def print_all():
     for key, value in enumerate(game_square_dict): 
         print(f'square: {key}, fff {value}')    
 
-def check_possibilites():
-      for key, value in enumerate(game_square_dict):
-        game_square_dict[value].test_possibilities()
+def solve_puzzle():
+     while True: 
+        zero_count = 0
+        for key, value in enumerate(game_square_dict):
+            game_square_dict[value].test_possibilities()
+
+        for i, value in enumerate(puzzle_array):
+            if 0 in puzzle_array[i]:
+                # print('break out')
+                zero_count += 1
+            else:
+                print('stay here')
+            # for j, value in enumerate(puzzle_array[i]):
+            
+            #     if puzzle_array[i][j] != 0:
+            #         print(puzzle_array[i][j])
+            # break
+        for i, j in enumerate(puzzle_array):
+            
+            print(puzzle_array[i])
+        print()
+        if zero_count == 0:
+            break
+        
        
 
 
@@ -103,7 +145,7 @@ def initialize_classes():
                 big_square = 9
             game_square_dict[i, j] = Game_square(i, j, big_square, value)
 
-    check_possibilites()
+    solve_puzzle()
     # print_all()
 
 
